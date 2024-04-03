@@ -66,7 +66,7 @@ function process_project($x) {
 
 function process_filename($yamlfile) {
     if (!is_file($yamlfile)) {
-        Log::error("{$yamlfile} tidak ada");
+        Log::error("File {$yamlfile} tidak ada");
         exit(1);
     }
     Log::info("Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes");
@@ -81,7 +81,7 @@ function process_filename($yamlfile) {
 
 function process_form_filename($yamlfile) {
     if (!is_file($yamlfile)) {
-        Log::error("{$yamlfile} tidak ada");
+        Log::error("File {$yamlfile} tidak ada");
         exit(1);
     }
     Log::info("Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes");
@@ -98,9 +98,8 @@ function process_form($x) {
     $outputfile = $x->output;
 
     //check outputfile
-    Log::info("output: {$outputfile}");
     if (!is_file($outputfile)) {
-        Log::error("{$outputfile} tidak ada");
+        Log::error("File {$outputfile} tidak ada");
         exit(1);
     }
 
