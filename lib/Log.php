@@ -4,14 +4,14 @@ class Log {
     public static $EOL = "\n";
 
     public static function info($text) {
-        echo "INFO    " . trim($text) . self::$EOL;
+        echo "" . trim($text) . self::$EOL;
     }
 
     public static function warning($text) {
-        echo "WARNING " . trim($text) . self::$EOL;
+        echo "WARNING: " . trim($text) . self::$EOL;
     }
 
     public static function error($text) {
-        echo "ERROR   " . trim($text) . self::$EOL;
+        echo "ERROR: " . trim($text) . self::$EOL;
     }
 }
