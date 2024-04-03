@@ -27,5 +27,7 @@ Info:
     values: [Laki-laki, Perempuan]
   Umur:
     type: text
-  Alamat: {field: alamat, type: text}
-  Diagnosa: {field: alamat, type: text}
+  Alamat:
+    type: text
+  Diagnosa:
+    type: text
