@@ -50,7 +50,7 @@ function process_project($x) {
         Log::error("`project.name` tidak ada");
         exit(1);
     }
-    Log::info("project.name {$x->project['name']}");
+    Log::info("project.name: {$x->project['name']}");
     if (!isset($x->forms)) {
         Log::error("`forms` tidak ada");
         exit(1);
