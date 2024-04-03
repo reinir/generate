@@ -1,0 +1,35 @@
+target: contoh.html
+---
+Diabetes Melitus:
+  Gula Darah Sewaktu:
+    field: gula_darah_sewaktu
+    type: checkbox
+  Gula Darah 2JPP:
+    field: gula_darah_2jpp
+    type: checkbox
+  Test:
+    abcd:
+      field: abcd
+      type: checkbox
+    defg:
+      field: defg
+      type: checkbox
+
+Info:
+  Nama Pasien:
+    field: nama_pasien
+    type: text
+  Jenis Kelamin:
+    field: jenis_kelamin
+    type: dropdown
+    values: [Laki-laki, Perempuan]
+  Umur:
+    field: umur
+    type: text
+  Alamat:
+    field: alamat
+    type: text
+  Dokter:
+  Telp:
+  Diagnosa:
+    type: text
