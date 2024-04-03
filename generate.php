@@ -17,6 +17,24 @@ try {
     exit(1);
 }
 
+class Title {
+    public $title;
+    public $value;
+    public function __construct($title, $value) {
+        $this->title = $title;
+        $this->value = $value;
+        if (is_file("types/title.php")) {
+            $x = $this;
+            include "types/title.php";
+        }
+    }
+    public function __get($name) {
+        if ($name == 'children') {
+            parse($this->value);
+        }
+    }
+}
+
 function parse($definition, $title = '') {
     foreach ($definition as $title => $value) {
         if (is_array($value)) {
@@ -29,12 +47,7 @@ function parse($definition, $title = '') {
                     include $filename;
                 }
             } else {
-                echo "<div>\n";
-                echo $title;
-                echo "<div style='margin-left:1.2em'>\n";
-                parse($value, $title);
-                echo "</div>\n";
-                echo "</div>\n";
+                new Title($title, $value);
             }
         }
     }
