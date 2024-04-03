@@ -7,7 +7,6 @@ $outputfile = "contoh.html";
 
 try {
     if (isset($argv)) {
-        //executed from command line
         if (isset($argv[1])) $yamlfile = $argv[1];
         $EOL = "\n";
     } else {
