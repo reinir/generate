@@ -1,3 +1,3 @@
 <div>
-    <button id="<?=$x->field?>" class="<?=$x->class?>"><?=$x->title?></button>
+    <button class="<?=$x->class?>" id="<?=$x->field?>"><?=$x->title?></button>
 </div>

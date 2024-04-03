@@ -1,6 +1,6 @@
 <div>
 <?=$x->title?>: 
-<select id="<?=$x->field?>" name="<?=$x->field?>" class="<?=$x->class?>">
+<select class="<?=$x->class?>" id="<?=$x->field?>" name="<?=$x->field?>">
 <?php
 foreach ($x->values as $value) {
     echo "<option>{$value}</option>";
