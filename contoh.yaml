@@ -21,7 +21,6 @@ Kirim:
 
 Info:
   Nama Pasien:
-    field: nama_pasien
     type: text
   Jenis Kelamin:
     type: dropdown
