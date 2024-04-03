@@ -8,12 +8,11 @@ Generate 1 form
 php generate.php contoh.yaml
 ```
 
-Sesuaikan `output` di file `.yaml`.
-
-Contoh definisi form:
+Sesuaikan `output` di file `.yaml`. Contoh definisi form:
 
 ```yaml
-output: contoh.html #output wajib ada
+#output wajib ada
+output: contoh.html
 ---
 Diabetes Melitus:
   Gula Darah Sewaktu:
@@ -35,12 +34,11 @@ Generate 1 project
 php generate.php simrs.yaml
 ```
 
-Sesuaikan `definitions` di file `.yaml`
-
-Contoh definisi project:
+Sesuaikan `definitions` di file `.yaml`. Contoh definisi project:
 
 ```yaml
-project: #project wajib ada
+#project wajib ada
+project:
   name: SIMRS
 forms:
   - simrs/contoh.yaml
