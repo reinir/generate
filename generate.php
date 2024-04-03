@@ -34,7 +34,7 @@ try {
     $text = file_get_contents($outputfile);
     $text = replace($text, $output, '<GENERATE>', '</GENERATE>');
     file_put_contents($outputfile, $text);
-    LOG::info("Written " . $outputfile . " " . filesize($outputfile) . " bytes");
+    LOG::info("Written " . filesize($outputfile) . " bytes to " . $outputfile);
 } catch (\Exception $e) {
     Log::error($e->getMessage());
     exit(1);
