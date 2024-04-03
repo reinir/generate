@@ -3,38 +3,15 @@ require './lib/.php';
 error_reporting(E_ALL ^ E_WARNING ^ E_DEPRECATED);
 
 $yamlfile = "contoh.yaml";
-$outputfile = "contoh.html";
 
 try {
     if (isset($argv)) {
         if (isset($argv[1])) $yamlfile = $argv[1];
-        $EOL = "\n";
+        Log::$EOL = "\n";
     } else {
-        $EOL = "<br>\n";
+        Log::$EOL = "<br>\n";
     }
-    Log::$EOL = $EOL;
-
-    //read yaml
-    Log::info("Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes");
-    $x = (new Yaml())->load($yamlfile);
-    if (isset($x['output'])) {
-        $outputfile = $x['output'];
-    } else {
-        Log::error("Tidak ada 'output'");
-        exit(1);
-    }
-
-    //generate
-    ob_start();
-    parse($x);
-    $output = "\n" . ob_get_clean();
-    LOG::info("Generated " . strlen($output) . " bytes");
-
-    //replace
-    $text = file_get_contents($outputfile);
-    $text = replace($text, $output, '<GENERATE>', '</GENERATE>');
-    file_put_contents($outputfile, $text);
-    LOG::info("Written " . filesize($outputfile) . " bytes to " . $outputfile);
+    process_filename($yamlfile);
 } catch (\Exception $e) {
     Log::error($e->getMessage());
     exit(1);
@@ -48,7 +25,7 @@ function parse($definition, $title = '') {
                 $filename = "types/{$x->type}.php";
                 if (is_file($filename)) {
                     $x->title = $title;
-                    if (!isset($x->field)) $x->field = preg_replace('/[^a-zA-Z0-9]/', '_', $title);
+                    if (!isset($x->field)) $x->field = strtolower(preg_replace('/[^a-zA-Z0-9]/', '_', $title));
                     include $filename;
                 }
             } else {
@@ -66,4 +43,76 @@ function parse($definition, $title = '') {
 function replace($text, $replacement, $start, $stop) {
     $pattern = '/(' . preg_quote($start, '/') . ')(.*?)(' . preg_quote($stop, '/') . ')/s';
     return preg_replace($pattern, '$1' . $replacement . '$3', $text);
+}
+
+function process_project($x) {
+    if (!isset($x->project['name'])) {
+        Log::error("`project.name` tidak ada");
+        exit(1);
+    }
+    Log::info("project.name {$x->project['name']}");
+    if (!isset($x->forms)) {
+        Log::error("`forms` tidak ada");
+        exit(1);
+    }
+    if (!is_array($x->forms)) {
+        Log::error("`forms` harus berupa array");
+        exit(1);
+    }
+    foreach ($x->forms as $filename) {
+        process_form_filename($filename);
+    }
+}
+
+function process_filename($yamlfile) {
+    if (!is_file($yamlfile)) {
+        Log::error("{$yamlfile} tidak ada");
+        exit(1);
+    }
+    Log::info("Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes");
+    $x = (new Yaml())->load($yamlfile);
+
+    if (isset($x['project'])) {
+        process_project((object) $x);
+    } else {
+        process_form((object) $x);
+    }
+}
+
+function process_form_filename($yamlfile) {
+    if (!is_file($yamlfile)) {
+        Log::error("{$yamlfile} tidak ada");
+        exit(1);
+    }
+    Log::info("Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes");
+    $x = (new Yaml())->load($yamlfile);
+    
+    process_form((object) $x);
+}
+
+function process_form($x) {
+    if (!isset($x->output)) {
+        Log::error("`output` tidak ada");
+        exit(1);
+    }
+    $outputfile = $x->output;
+
+    //check outputfile
+    Log::info("output: {$outputfile}");
+    if (!is_file($outputfile)) {
+        Log::error("{$outputfile} tidak ada");
+        exit(1);
+    }
+
+    //generate
+    ob_start();
+    parse($x);
+    $output = "\n" . ob_get_clean();
+    LOG::info("Generated " . strlen($output) . " bytes");
+
+    //replace
+    $text = file_get_contents($outputfile);
+    $text = replace($text, $output, '<GENERATE>', '</GENERATE>');
+    file_put_contents($outputfile, $text);
+    LOG::info("Written " . filesize($outputfile) . " bytes to " . $outputfile);
 }

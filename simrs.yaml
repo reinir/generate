@@ -1,4 +1,4 @@
 project:
   name: SIMRS
-definitions:
+forms:
   - simrs/contoh.yaml
