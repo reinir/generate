@@ -39,10 +39,11 @@ function parse($definition, $title = '') {
     foreach ($definition as $title => $value) {
         if (is_array($value)) {
             $x = (object) $value;
-            if (isset($x->field, $x->type)) {
+            if (isset($x->type)) {
                 $filename = "types/{$x->type}.php";
                 if (is_file($filename)) {
                     $x->title = $title;
+                    if (!isset($x->field)) $x->field = preg_replace('/[^a-zA-Z0-9]/', '_', $title);
                     include $filename;
                 }
             } else {

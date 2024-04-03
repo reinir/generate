@@ -15,6 +15,10 @@ Diabetes Melitus:
       field: defg
       type: checkbox
 
+Kirim:
+  type: button
+  class: primary
+
 Info:
   Nama Pasien:
     field: nama_pasien
