@@ -2,7 +2,7 @@
 require './lib/.php';
 
 $yamlfile = "contoh.yaml";
-$targetfile = "contoh.html";
+$outputfile = "contoh.html";
 
 try {
     if (isset($argv)) {
@@ -16,21 +16,21 @@ try {
     //read yaml
     echo $yamlfile . " " . filesize($yamlfile) . " bytes{$EOL}";
     $x = (new Yaml())->load($yamlfile);
-    if (isset($x['target'])) {
-        $targetfile = $x['target'];
+    if (isset($x['output'])) {
+        $outputfile = $x['output'];
     }
 
-    //parse
+    //generate
     ob_start();
     parse($x);
     $output = "\n" . ob_get_clean();
     echo "generated " . strlen($output) . " bytes{$EOL}";
 
     //replace
-    $text = file_get_contents($targetfile);
+    $text = file_get_contents($outputfile);
     $text = replace($text, $output, '<GENERATE>', '</GENERATE>');
-    file_put_contents($targetfile, $text);
-    echo $targetfile . " " . filesize($targetfile) . " bytes{$EOL}";
+    file_put_contents($outputfile, $text);
+    echo $outputfile . " " . filesize($outputfile) . " bytes{$EOL}";
 } catch (\Exception $e) {
     echo $e;
 }
