@@ -1,5 +1,6 @@
 <?php
 require './lib/.php';
+error_reporting(E_ALL ^ E_WARNING);
 
 $yamlfile = "contoh.yaml";
 $outputfile = "contoh.html";
