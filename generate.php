@@ -1,6 +1,6 @@
 <?php
 require './lib/.php';
-error_reporting(E_ALL ^ E_WARNING);
+error_reporting(E_ALL ^ E_WARNING ^ E_DEPRECATED);
 
 $yamlfile = "contoh.yaml";
 $outputfile = "contoh.html";
@@ -15,23 +15,26 @@ try {
     }
 
     //read yaml
-    echo $yamlfile . " " . filesize($yamlfile) . " bytes{$EOL}";
+    echo "Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes{$EOL}";
     $x = (new Yaml())->load($yamlfile);
     if (isset($x['output'])) {
         $outputfile = $x['output'];
+    } else {
+        echo "ERROR: Tidak ada 'output'\n";
+        exit(1);
     }
 
     //generate
     ob_start();
     parse($x);
     $output = "\n" . ob_get_clean();
-    echo "generated " . strlen($output) . " bytes{$EOL}";
+    echo "Generated " . strlen($output) . " bytes{$EOL}";
 
     //replace
     $text = file_get_contents($outputfile);
     $text = replace($text, $output, '<GENERATE>', '</GENERATE>');
     file_put_contents($outputfile, $text);
-    echo $outputfile . " " . filesize($outputfile) . " bytes{$EOL}";
+    echo "Written " . $outputfile . " " . filesize($outputfile) . " bytes{$EOL}";
 } catch (\Exception $e) {
     echo $e;
 }

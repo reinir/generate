@@ -24,11 +24,9 @@ Info:
     field: nama_pasien
     type: text
   Jenis Kelamin:
-    field: jenis_kelamin
     type: dropdown
     values: [Laki-laki, Perempuan]
   Umur:
-    field: umur
     type: text
   Alamat: {field: alamat, type: text}
   Diagnosa: {field: alamat, type: text}
