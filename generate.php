@@ -12,14 +12,15 @@ try {
     } else {
         $EOL = "<br>\n";
     }
+    Log::$EOL = $EOL;
 
     //read yaml
-    echo "Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes{$EOL}";
+    Log::info("Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes");
     $x = (new Yaml())->load($yamlfile);
     if (isset($x['output'])) {
         $outputfile = $x['output'];
     } else {
-        echo "ERROR: Tidak ada 'output'\n";
+        Log::error("Tidak ada 'output'");
         exit(1);
     }
 
@@ -27,15 +28,16 @@ try {
     ob_start();
     parse($x);
     $output = "\n" . ob_get_clean();
-    echo "Generated " . strlen($output) . " bytes{$EOL}";
+    LOG::info("Generated " . strlen($output) . " bytes");
 
     //replace
     $text = file_get_contents($outputfile);
     $text = replace($text, $output, '<GENERATE>', '</GENERATE>');
     file_put_contents($outputfile, $text);
-    echo "Written " . $outputfile . " " . filesize($outputfile) . " bytes{$EOL}";
+    LOG::info("Written " . $outputfile . " " . filesize($outputfile) . " bytes");
 } catch (\Exception $e) {
-    echo $e;
+    Log::error($e->getMessage());
+    exit(1);
 }
 
 function parse($definition, $title = '') {
