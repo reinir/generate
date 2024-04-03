@@ -16,8 +16,8 @@ try {
     //read yaml
     echo $yamlfile . " " . filesize($yamlfile) . " bytes{$EOL}";
     $x = (new Yaml())->load($yamlfile);
-    if (isset($x['file'])) {
-        $targetfile = $x['file'];
+    if (isset($x['target'])) {
+        $targetfile = $x['target'];
     }
 
     //parse
