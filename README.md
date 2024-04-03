@@ -34,7 +34,7 @@ Generate 1 project
 php generate.php simrs.yaml
 ```
 
-Sesuaikan `definitions` di file `.yaml`. Contoh definisi project:
+Sesuaikan `forms` di file `.yaml`. Contoh definisi project:
 
 ```yaml
 #project wajib ada
