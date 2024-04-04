@@ -1,7 +1,7 @@
 <?php
 
 class Log {
-    public static $EOL;
+    public static $EOL = "\n";
 
     public static function info($text) {
         echo "" . trim($text) . self::$EOL;
