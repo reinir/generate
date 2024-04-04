@@ -23,9 +23,10 @@ class Title {
     public function __construct($title, $value) {
         $this->title = $title;
         $this->value = $value;
-        if (is_file("types/title.php")) {
+        $filename = __DIR__ . "/types/title.php";
+        if (is_file($filename)) {
             $x = $this;
-            include "types/title.php";
+            include $filename;
         }
     }
     public function __get($name) {
@@ -40,7 +41,7 @@ function parse($definition, $title = '') {
         if (is_array($value)) {
             $x = (object) $value;
             if (isset($x->type)) {
-                $filename = "types/{$x->type}.php";
+                $filename = __DIR__ . "/types/{$x->type}.php";
                 if (is_file($filename)) {
                     $x->title = $title;
                     if (!isset($x->field)) $x->field = strtolower(preg_replace('/[^a-zA-Z0-9]/', '_', $title));
@@ -100,7 +101,10 @@ function process_form_filename($yamlfile) {
     Log::info("Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes");
     $x = (new Yaml())->load($yamlfile);
     
+    $cwd = getcwd();
+    chdir(dirname($yamlfile));
     process_form((object) $x);
+    chdir($cwd);
 }
 
 function process_form($x) {
@@ -126,5 +130,5 @@ function process_form($x) {
     $text = file_get_contents($outputfile);
     $text = replace($text, $output, '<GENERATE>', '</GENERATE>');
     file_put_contents($outputfile, $text);
-    LOG::info("Written " . filesize($outputfile) . " bytes to " . $outputfile);
+    LOG::info("Written " . filesize($outputfile));
 }
