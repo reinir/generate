@@ -130,5 +130,5 @@ function process_form($x) {
     $text = file_get_contents($outputfile);
     $text = replace($text, $output, '<GENERATE>', '</GENERATE>');
     file_put_contents($outputfile, $text);
-    LOG::info("Written " . filesize($outputfile));
+    LOG::info("Written " . filesize($outputfile) . " bytes");
 }
