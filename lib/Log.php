@@ -1,7 +1,7 @@
 <?php
 
 class Log {
-    public static $EOL = "\n";
+    public static $EOL;
 
     public static function info($text) {
         echo "" . trim($text) . self::$EOL;
@@ -15,3 +15,5 @@ class Log {
         echo "ERROR: " . trim($text) . self::$EOL;
     }
 }
+
+Log::$EOL = isset($argv) ? "\n" : "<br>\n";
