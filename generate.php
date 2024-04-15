@@ -1,5 +1,5 @@
 <?php
-require './lib/.php';
+require 'lib/.php';
 error_reporting(E_ALL ^ E_WARNING ^ E_DEPRECATED);
 
 $yamlfile = "contoh.yaml";
@@ -86,14 +86,18 @@ function process_filename($yamlfile) {
     Log::info("Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes");
     $x = (new Yaml())->load($yamlfile);
 
+    $cwd = getcwd();
+    chdir(dirname($yamlfile));
     if (isset($x['project'])) {
         process_project((object) $x);
     } else {
         process_form((object) $x);
     }
+    chdir($cwd);
 }
 
 function process_form_filename($yamlfile) {
+    Log::info("this");
     if (!is_file($yamlfile)) {
         Log::error("File {$yamlfile} tidak ada");
         exit(1);
@@ -101,10 +105,8 @@ function process_form_filename($yamlfile) {
     Log::info("Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes");
     $x = (new Yaml())->load($yamlfile);
     
-    $cwd = getcwd();
-    chdir(dirname($yamlfile));
+    Log::info("process_form_filename " . getcwd());
     process_form((object) $x);
-    chdir($cwd);
 }
 
 function process_form($x) {

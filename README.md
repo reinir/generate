@@ -41,5 +41,5 @@ Sesuaikan `forms` di file `.yaml`. Contoh definisi project:
 project:
   name: SIMRS
 forms:
-  - simrs/contoh.yaml
+  - simrs/form1.yaml
 ```
