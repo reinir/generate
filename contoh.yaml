@@ -3,7 +3,7 @@ output: contoh.html
 Diabetes Melitus:
   Gula Darah Sewaktu:
     field: gula_darah_sewaktu
-    type: checkbox
+    type: text
   Gula Darah 2JPP:
     field: gula_darah_2jpp
     type: checkbox

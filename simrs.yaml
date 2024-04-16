@@ -2,4 +2,3 @@ project:
   name: SIMRS
 forms:
   - simrs/form1.yaml
-  - contoh.yaml

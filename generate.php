@@ -1,10 +1,14 @@
 <?php
 require 'lib/.php';
-error_reporting(E_ALL ^ E_WARNING ^ E_DEPRECATED);
+error_reporting(E_ERROR);
 
 $yamlfile = "contoh.yaml";
 
 try {
+    /**
+     * sebelum file dibaca, belum diketahui apakah file tersebut mendefinisikan project atau form
+     */
+
     if (isset($argv)) {
         if (isset($argv[1])) $yamlfile = $argv[1];
         Log::$EOL = "\n";
@@ -64,7 +68,7 @@ function process_project($x) {
         Log::error("`project.name` tidak ada");
         exit(1);
     }
-    Log::info("project.name: {$x->project['name']}");
+    Log::info("Project {$x->project['name']}");
     if (!isset($x->forms)) {
         Log::error("`forms` tidak ada");
         exit(1);
@@ -74,7 +78,8 @@ function process_project($x) {
         exit(1);
     }
     foreach ($x->forms as $filename) {
-        process_form_filename($filename);
+        // process_form_filename($filename);
+        processForm($filename);
     }
 }
 
@@ -91,34 +96,39 @@ function process_filename($yamlfile) {
     if (isset($x['project'])) {
         process_project((object) $x);
     } else {
-        process_form((object) $x);
+        // process_form((object) $x);
+        processForm($yamlfile, (object) $x);
     }
     chdir($cwd);
 }
 
-function process_form_filename($yamlfile) {
-    Log::info("this");
-    if (!is_file($yamlfile)) {
-        Log::error("File {$yamlfile} tidak ada");
-        exit(1);
-    }
-    Log::info("Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes");
-    $x = (new Yaml())->load($yamlfile);
-    
-    Log::info("process_form_filename " . getcwd());
-    process_form((object) $x);
-}
+function processForm($filename, $x = null) {
+    $size = null;
+    if (empty($x)) {
+        //cek filename
+        if (!is_file($filename)) {
+            Log::error("File {$filename} tidak ada");
+            exit(1);
+        }
+        $size = filesize($filename);
 
-function process_form($x) {
+        //baca yaml
+        $x = (object) (new Yaml())->load($filename);
+    }
+
+    //pindah directory
+    $cwd = getcwd();
+    chdir(dirname($filename));
+
+    // output
     if (!isset($x->output)) {
-        Log::error("`output` tidak ada");
+        Log::error('"output" tidak ada');
         exit(1);
     }
-    $outputfile = $x->output;
 
-    //check outputfile
-    if (!is_file($outputfile)) {
-        Log::error("File {$outputfile} tidak ada");
+    //cek file output
+    if (!is_file($x->output)) {
+        Log::error("File {$x->output} tidak ada");
         exit(1);
     }
 
@@ -126,11 +136,59 @@ function process_form($x) {
     ob_start();
     parse($x);
     $output = "\n" . ob_get_clean();
-    LOG::info("Generated " . strlen($output) . " bytes");
+    $generated = strlen($output);
 
     //replace
-    $text = file_get_contents($outputfile);
+    $text = file_get_contents($x->output);
     $text = replace($text, $output, '<GENERATE>', '</GENERATE>');
-    file_put_contents($outputfile, $text);
-    LOG::info("Written " . filesize($outputfile) . " bytes");
+    file_put_contents($x->output, $text);
+    $written = strlen($text);
+    LOG::info("Form {$filename} -> generated {$generated} bytes -> written {$written} bytes");
+
+    //kembalikan directory
+    chdir($cwd);
 }
+
+// function process_form_filename($yamlfile) {
+//     if (!is_file($yamlfile)) {
+//         Log::error("File {$yamlfile} tidak ada");
+//         exit(1);
+//     }
+//     Log::info("Reading " . $yamlfile . " " . filesize($yamlfile) . " bytes");
+//     $x = (new Yaml())->load($yamlfile);
+    
+//     // Log::info("process_form_filename " . getcwd());
+//     $cwd = getcwd();
+//     chdir(dirname($yamlfile));
+//     process_form((object) $x);
+//     chdir($cwd);
+// }
+
+// function process_form($x) {
+//     if (!isset($x->output)) {
+//         Log::error("`output` tidak ada");
+//         exit(1);
+//     }
+//     $outputfile = $x->output;
+
+//     //check outputfile
+//     if (!is_file($outputfile)) {
+//         Log::error("File {$outputfile} tidak ada");
+//         exit(1);
+//     }
+
+//     //generate
+//     ob_start();
+//     parse($x);
+//     $output = "\n" . ob_get_clean();
+//     $generated = strlen($output);
+//     // LOG::info("Generated " . strlen($output) . " bytes");
+
+//     //replace
+//     $text = file_get_contents($outputfile);
+//     $text = replace($text, $output, '<GENERATE>', '</GENERATE>');
+//     file_put_contents($outputfile, $text);
+//     $written = strlen($text);
+//     // LOG::info("Written " . filesize($outputfile) . " bytes");
+//     LOG::info("Generated {$generated} bytes, written {$written} bytes");
+// }
