@@ -5,10 +5,6 @@ error_reporting(E_ERROR);
 $yamlfile = "contoh.yaml";
 
 try {
-    /**
-     * sebelum file dibaca, belum diketahui apakah file tersebut mendefinisikan project atau form
-     */
-
     if (isset($argv)) {
         if (isset($argv[1])) $yamlfile = $argv[1];
         Log::$EOL = "\n";
