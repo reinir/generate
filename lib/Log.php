@@ -4,7 +4,7 @@ class Log {
     public static $EOL = "\n";
 
     public static function info($text) {
-        echo "" . trim($text) . self::$EOL;
+        echo "" . trim($text) . PHP_EOL;
     }
 
     public static function warning($text) {
