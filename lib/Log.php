@@ -1,14 +1,14 @@
 <?php
 
 class Log {
-    public static $EOL = "\n";
+    public static $EOL = PHP_EOL;
 
     public static function info($text) {
-        echo "" . trim($text) . PHP_EOL;
+        echo "" . trim($text) . self::$EOL;
     }
 
     public static function warning($text) {
-        echo "WARNING: " . trim($text) . PHP_EOL;
+        echo "WARNING: " . trim($text) . self::$EOL;
     }
 
     public static function error($text) {
@@ -16,4 +16,4 @@ class Log {
     }
 }
 
-Log::$EOL = isset($argv) ? "\n" : "<br>\n";
+Log::$EOL = isset($argv) ? PHP_EOL : "<br>\n";
