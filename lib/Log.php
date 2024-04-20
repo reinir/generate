@@ -16,4 +16,4 @@ class Log {
     }
 }
 
-Log::$EOL = isset($argv) ? PHP_EOL : "<br>\n";
+Log::$EOL = isset($argv) ? "\n" : "<br>\n";
