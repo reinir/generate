@@ -8,7 +8,7 @@ class Log {
     }
 
     public static function warning($text) {
-        echo "WARNING: " . trim($text) . self::$EOL;
+        echo "WARNING: " . trim($text) . PHP_EOL;
     }
 
     public static function error($text) {
