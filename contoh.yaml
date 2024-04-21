@@ -27,5 +27,7 @@ Info:
     values: [Laki-laki, Perempuan]
   Umur:
     type: text
+  Alamat:
+    type: text
   Diagnosa:
     type: text
