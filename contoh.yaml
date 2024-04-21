@@ -24,7 +24,7 @@ Info:
     type: text
   Jenis Kelamin:
     type: dropdown
-    values: [Laki-laki, Perempuan, Unknown]
+    values: [Laki-laki, Perempuan]
   Umur:
     type: text
   Alamat:
